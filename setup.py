@@ -17,7 +17,10 @@ setup_params = dict(
 	url="https://bitbucket.org/jaraco/jaraco.fabric",
 	packages=setuptools.find_packages(),
 	namespace_packages=['jaraco'],
-	zip_safe=False,
+	install_requires=[
+		'jaraco.apt',
+		'jaraco.util',
+	],
 	setup_requires=[
 		'hgtools',
 	],
