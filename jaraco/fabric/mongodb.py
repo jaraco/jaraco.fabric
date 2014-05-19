@@ -11,9 +11,9 @@ def distro_install():
     service).
     """
     content = 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen'
-    org_list = '/etc/apt/sources.list.d/10gen.list'
+    org_list = '/etc/apt/sources.list.d/mongodb.list'
     files.append(org_list, content, use_sudo=True)
     with settings(warn_only=True):
         sudo('apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10')
     sudo('aptitude update')
-    apt.install_packages('mongodb-10gen')
+    apt.install_packages('mongodb-org')
