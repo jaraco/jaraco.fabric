@@ -10,10 +10,10 @@ def shell_env(**env_vars):
     """
     orig_shell = env['shell']
     env_vars_str = ' '.join(
-        '{key}={value}'.format(**vars())
+        '{key}="{value}"'.format(**locals())
         for key, value in env_vars.items()
     )
-    env['shell'] = '{env_vars_str} {orig_shell}'.format(**vars())
+    env['shell'] = '{env_vars_str} {orig_shell}'.format(**locals())
     try:
         yield
     finally:
