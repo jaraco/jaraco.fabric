@@ -52,7 +52,7 @@ def create_installers_group():
     apt_commands = ['aptitude', 'apt-get', 'dpkg', 'apt-key',
             'apt-add-repository', 'apt-cache']
     commands = ', '.join('/usr/bin/' + cmd for cmd in apt_commands)
-    content = "%installers ALL=NOPASSWD: {commands}\n".format(**vars())
+    content = "%installers ALL=NOPASSWD: {commands}\n".format(**locals())
     upload_sudoersd_file('installers', content)
     with settings(warn_only=True):
         sudo('addgroup installers')
