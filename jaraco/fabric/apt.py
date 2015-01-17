@@ -20,7 +20,7 @@ def package_context(target, action='install'):
     the list within the context.
     """
     target = ' '.join(always_iterable(target))
-    status = sudo('aptitude {action} -y {target}'.format(**vars()))
+    status = sudo('aptitude {action} -q -y {target}'.format(**vars()))
     packages = jaraco.apt.parse_new_packages(status)
     try:
         yield packages
@@ -41,7 +41,7 @@ def remove_packages(packages):
     if not packages:
         print("No packages specified, nothing to remove")
         return
-    sudo('aptitude remove -y ' + ' '.join(packages))
+    sudo('aptitude remove -y -q ' + ' '.join(packages))
 
 @task
 def create_installers_group():
@@ -90,7 +90,7 @@ def add_ppa(name):
     """
     sudo('aptitude update')
     # need python-software-properties for apt-add-repository
-    sudo('aptitude install -y python-software-properties')
+    sudo('aptitude install -q -y python-software-properties')
     # apt-add-repository returns 0 even when it failed, so check its output
     #  for success or failure.
     cmd = [
