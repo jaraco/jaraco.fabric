@@ -19,7 +19,7 @@ setup_params = dict(
 	namespace_packages=['jaraco'],
 	install_requires=[
 		'jaraco.apt',
-		'jaraco.util',
+		'jaraco.itertools',
 	],
 	setup_requires=[
 		'hgtools',

@@ -5,7 +5,7 @@ import re
 import contextlib
 
 import jaraco.apt
-from jaraco.util.itertools import always_iterable
+from jaraco.itertools import always_iterable
 from fabric.operations import sudo, run
 from fabric.api import task, put
 from fabric.context_managers import settings
