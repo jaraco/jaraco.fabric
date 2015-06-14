@@ -28,6 +28,6 @@ def distro_install():
     files.append(org_list, content, use_sudo=True)
 
     with settings(warn_only=True):
-        sudo('apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10')
+        sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10')
     sudo('aptitude update')
     apt.install_packages('mongodb-org')
