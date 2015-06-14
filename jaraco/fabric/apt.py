@@ -104,3 +104,6 @@ def add_ppa(name):
         msg = "Failed to add PPA {name}".format(**vars())
         fabric.utils.abort(msg)
     sudo('aptitude update')
+
+def lsb_release():
+    return run("lsb_release -sc").strip()

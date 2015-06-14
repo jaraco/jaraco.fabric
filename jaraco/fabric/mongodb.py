@@ -1,4 +1,4 @@
-.from fabric.api import sudo, task, run
+from fabric.api import sudo, task
 from fabric.contrib import files
 from fabric.context_managers import settings
 
@@ -20,7 +20,7 @@ def distro_install():
     #files.append(org_list, content, use_sudo=True)
 
     # MongoDB 3
-    lsb_release = run("lsb_release -sc").strip()
+    lsb_release = apt.lsb_release()
     repo_url = "http://repo.mongodb.org/apt/ubuntu"
     tmpl = "deb {repo_url} {lsb_release}/mongodb-org/3.0 multiverse"
     content = tmpl.format(**locals())
