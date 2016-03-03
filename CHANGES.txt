@@ -1,3 +1,14 @@
+3.0
+~~~
+
+MongoDB distro_install command now requires a version
+be specified as to which version to install. Invoke
+with
+
+    fab distro_install:3.2
+
+or similar.
+
 2.0
 ~~~
 
