@@ -4,12 +4,28 @@ from fabric.context_managers import settings
 
 from . import apt
 
+
 @task
-def distro_install():
+def distro_install(version):
     """
     Install mongodb as an apt package (which also configures it as a
     service).
     """
+
+    if version.startswith('2.'):
+        return distro_install_2(version)
+
+    elif version.startswith('3.'):
+        return distro_install_3(version)
+
+    raise RuntimeError('Unknown version {}'.format(version))
+
+
+def distro_install_2(version):
+    """
+    Install MongoDB version 2.x
+    """
+    assert version.startswith('2.')
 
     # MongoDB 2
     content = (
@@ -17,14 +33,20 @@ def distro_install():
         'dist 10gen',
     )
     org_list = '/etc/apt/sources.list.d/mongodb.list'
-    #files.append(org_list, content, use_sudo=True)
+    files.append(org_list, content, use_sudo=True)
 
-    # MongoDB 3
+
+def distro_install_3(version):
+    """
+    Install MongoDB version 3.x
+    """
+    assert version.startswith('3.')
+
     lsb_release = apt.lsb_release()
     repo_url = "http://repo.mongodb.org/apt/ubuntu"
-    tmpl = "deb {repo_url} {lsb_release}/mongodb-org/3.0 multiverse"
+    tmpl = "deb {repo_url} {lsb_release}/mongodb-org/{version} multiverse"
     content = tmpl.format(**locals())
-    org_list = '/etc/apt/sources.list.d/mongodb-org-3.0.list'
+    org_list = '/etc/apt/sources.list.d/mongodb-org-{version}.list'.format(**locals())
     files.append(org_list, content, use_sudo=True)
 
     with settings(warn_only=True):
