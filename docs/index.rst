@@ -1,5 +1,5 @@
-Welcome to skeleton documentation!
-========================================
+Welcome to jaraco.fabric documentation!
+=======================================
 
 .. toctree::
    :maxdepth: 1
@@ -7,7 +7,12 @@ Welcome to skeleton documentation!
    history
 
 
-.. automodule:: skeleton
+.. automodule:: jaraco.fabric.mongodb
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: jaraco.fabric.apt
     :members:
     :undoc-members:
     :show-inheritance:
