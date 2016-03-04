@@ -5,6 +5,12 @@ from fabric.context_managers import settings
 from . import apt
 
 
+APT_KEYS = [
+    '7F0CEB10',
+    'D68FA50F',
+]
+
+
 @task
 def distro_install(version):
     """
@@ -50,6 +56,8 @@ def distro_install_3(version):
     files.append(org_list, content, use_sudo=True)
 
     with settings(warn_only=True):
-        sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10')
+        for key in APT_KEYS:
+            sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv {}'.format(key))
+
     sudo('aptitude update')
-    apt.install_packages('mongodb-org')
+    apt.install_packages('mongodb-org={version}'.format(**locals()))
