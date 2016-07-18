@@ -1,3 +1,9 @@
+3.2
+===
+
+Allow package to be executed with ``-m jaraco.fabric``,
+creating a fabfile and running Fabric against it.
+
 3.1
 ===
 

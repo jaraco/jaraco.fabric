@@ -11,6 +11,15 @@ from fabric.api import task, put
 from fabric.context_managers import settings
 import fabric.utils
 
+
+__all__ = [
+    'install_packages',
+    'create_installers_group',
+    'add_installer',
+    'add_ppa',
+]
+
+
 @contextlib.contextmanager
 def package_context(target, action='install'):
     """

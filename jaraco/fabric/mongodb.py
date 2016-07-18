@@ -5,6 +5,9 @@ from fabric.context_managers import settings
 from . import apt
 
 
+__all__ = 'distro_install',
+
+
 APT_KEYS = [
     '7F0CEB10',
     'D68FA50F',
