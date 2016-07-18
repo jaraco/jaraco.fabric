@@ -9,8 +9,6 @@ __all__ = 'distro_install',
 
 
 APT_KEYS = [
-    '7F0CEB10',
-    'D68FA50F',
     'EA312927',
 ]
 
