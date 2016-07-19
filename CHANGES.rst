@@ -4,6 +4,9 @@
 Allow package to be executed with ``-m jaraco.fabric``,
 creating a fabfile and running Fabric against it.
 
+Package is automatically deployed via continuous
+integration when tests pass on Python 3.
+
 3.1
 ===
 
