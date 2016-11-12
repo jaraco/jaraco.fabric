@@ -16,7 +16,7 @@ from . import apt
 
 __all__ = (
     'distro_install', 'find_current_version', 'install_systemd',
-    'enable_authentication', 'install_user',
+    'enable_authentication', 'install_user', 'bind_all',
 )
 
 
@@ -90,6 +90,17 @@ def enable_authentication():
     with yaml_config('/etc/mongod.conf', use_sudo=True) as config:
         security = config.setdefault('security', {})
         security['authorization'] = 'enabled'
+
+
+@task
+def bind_all():
+    """
+    Bind to all interfaces.
+    """
+    with yaml_config('/etc/mongod.conf', use_sudo=True) as config:
+        config.setdefault('net', {}).update(
+            bindIp='0.0.0.0',
+        )
 
 
 @contextlib.contextmanager
