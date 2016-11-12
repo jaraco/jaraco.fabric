@@ -65,5 +65,5 @@ def distro_install_3(version):
         for key in APT_KEYS:
             sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv {}'.format(key))
 
-    sudo('aptitude update')
+    sudo('apt update')
     apt.install_packages('mongodb-org={version}'.format(**locals()))
