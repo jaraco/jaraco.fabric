@@ -1,3 +1,12 @@
+3.5
+===
+
+Added more tasks for supporting MongoDB deployment:
+
+ - enable_authentication
+ - install_user
+ - bind_all
+
 3.4
 ===
 
