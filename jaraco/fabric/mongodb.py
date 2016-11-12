@@ -1,5 +1,7 @@
 import re
 
+import pkg_resources
+
 from fabric.api import sudo, task
 from fabric.contrib import files
 from fabric.context_managers import settings
@@ -7,7 +9,7 @@ from fabric.context_managers import settings
 from . import apt
 
 
-__all__ = 'distro_install', 'find_current_version'
+__all__ = 'distro_install', 'find_current_version', 'install_systemd'
 
 
 APT_KEYS = [
@@ -76,3 +78,21 @@ def distro_install_3(version):
     sudo('apt update')
     version = find_current_version()
     apt.install_packages('mongodb-org={version}'.format(**locals()))
+    install_systemd()
+
+
+@task
+def install_systemd():
+    """
+    On newer versions of Ubuntu, make sure that systemd is configured
+    to manage the service.
+    https://docs.mongodb.com/v3.2/tutorial/install-mongodb-on-ubuntu/#ubuntu-16-04-only-create-systemd-service-file
+    """
+    if apt.lsb_version() < '15.04':
+        return
+
+    fn = 'mongod.service'
+    service_strm = pkg_resources.resource_stream(__name__, fn)
+    files.put(service_strm, '/lib/systemd/system/' + fn, use_sudo=True)
+    # TODO: does the service start automatically? If not,
+    # sudo('systemctl start mongod')

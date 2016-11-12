@@ -116,3 +116,7 @@ def add_ppa(name):
 
 def lsb_release():
     return run("lsb_release -sc").strip()
+
+
+def lsb_version():
+    return run('lsb_release -sr').strip()

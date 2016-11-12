@@ -1,12 +1,12 @@
-.. image:: https://img.shields.io/pypi/v/skeleton.svg
-   :target: https://pypi.org/project/skeleton
+.. image:: https://img.shields.io/pypi/v/jaraco.fabric.svg
+   :target: https://pypi.org/project/jaraco.fabric
 
-.. image:: https://img.shields.io/pypi/pyversions/skeleton.svg
+.. image:: https://img.shields.io/pypi/pyversions/jaraco.fabric.svg
 
-.. image:: https://img.shields.io/pypi/dm/skeleton.svg
+.. image:: https://img.shields.io/pypi/dm/jaraco.fabric.svg
 
-.. image:: https://img.shields.io/travis/jaraco/skeleton/master.svg
-   :target: http://travis-ci.org/jaraco/skeleton
+.. image:: https://img.shields.io/travis/jaraco/jaraco.fabric/master.svg
+   :target: http://travis-ci.org/jaraco/jaraco.fabric
 
 
 License

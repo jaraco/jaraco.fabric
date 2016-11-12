@@ -12,6 +12,9 @@
 
     python -m jaraco.fabric mongodb.distro_install
 
+* #4: Install the systemd configuration so that the
+  service is managed.
+
 3.3
 ===
 
