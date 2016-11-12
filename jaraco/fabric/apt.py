@@ -24,12 +24,12 @@ __all__ = [
 def package_context(target, action='install'):
     """
     A context for installing the build dependencies for a given target (or
-    targets). Uses aptitude. Removes the dependencies when the context is
+    targets). Uses apt. Removes the dependencies when the context is
     exited. One may prevent the removal of some or all packages by modifying
     the list within the context.
     """
     target = ' '.join(always_iterable(target))
-    status = sudo('aptitude {action} -q -y {target}'.format(**vars()))
+    status = sudo('apt {action} -q -y {target}'.format(**vars()))
     packages = jaraco.apt.parse_new_packages(status)
     try:
         yield packages
@@ -50,7 +50,7 @@ def remove_packages(packages):
     if not packages:
         print("No packages specified, nothing to remove")
         return
-    sudo('aptitude remove -y -q ' + ' '.join(packages))
+    sudo('apt autoremove -y -q ' + ' '.join(packages))
 
 @task
 def create_installers_group():
@@ -59,7 +59,7 @@ def create_installers_group():
     without typing a password.
     """
     apt_commands = ['aptitude', 'apt-get', 'dpkg', 'apt-key',
-            'apt-add-repository', 'apt-cache']
+            'apt-add-repository', 'apt-cache', 'apt']
     commands = ', '.join('/usr/bin/' + cmd for cmd in apt_commands)
     content = "%installers ALL=NOPASSWD: {commands}\n".format(**locals())
     upload_sudoersd_file('installers', content)
@@ -97,9 +97,9 @@ def add_ppa(name):
     """
     Add the Personal Package Archive
     """
-    sudo('aptitude update')
+    sudo('apt update')
     # need python-software-properties for apt-add-repository
-    sudo('aptitude install -q -y python-software-properties')
+    sudo('apt install -q -y python-software-properties')
     # apt-add-repository returns 0 even when it failed, so check its output
     #  for success or failure.
     cmd = [
@@ -112,7 +112,7 @@ def add_ppa(name):
     if not 'Total number processed: 1' in res:
         msg = "Failed to add PPA {name}".format(**vars())
         fabric.utils.abort(msg)
-    sudo('aptitude update')
+    sudo('apt update')
 
 def lsb_release():
     return run("lsb_release -sc").strip()

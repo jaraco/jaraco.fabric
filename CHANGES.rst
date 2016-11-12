@@ -1,3 +1,8 @@
+3.3
+===
+
+Prefer ``apt`` to ``aptitude``.
+
 3.2
 ===
 
