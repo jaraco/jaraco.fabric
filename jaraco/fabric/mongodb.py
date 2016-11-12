@@ -22,10 +22,6 @@ def distro_install(version="3.2"):
     """
     Install mongodb as an apt package (which also configures it as a
     service).
-
-    TODO: Currently, the service doesn't start on Ubuntu 15.04 or later.
-    See https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04
-    for more details on how to configure it as a service.
     """
 
     if version.startswith('2.'):
