@@ -30,6 +30,7 @@ setup_params = dict(
 	install_requires=[
 		'jaraco.apt',
 		'jaraco.itertools',
+		'pyyaml',
 	],
 	extras_require={
 	},

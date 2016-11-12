@@ -1,15 +1,23 @@
+import os
 import re
+import json
+import getpass
+import contextlib
+import io
 
 import pkg_resources
-
-from fabric.api import sudo, task
+import yaml
+from fabric.api import sudo, task, run
 from fabric.contrib import files
 from fabric.context_managers import settings
 
 from . import apt
 
 
-__all__ = 'distro_install', 'find_current_version', 'install_systemd'
+__all__ = (
+    'distro_install', 'find_current_version', 'install_systemd',
+    'enable_authentication', 'install_user',
+)
 
 
 APT_KEYS = [
@@ -75,6 +83,39 @@ def distro_install_3(version):
     version = find_current_version()
     apt.install_packages('mongodb-org={version}'.format(**locals()))
     install_systemd()
+
+
+@task
+def enable_authentication():
+    with yaml_config('/etc/mongod.conf', use_sudo=True) as config:
+        security = config.setdefault('security', {})
+        security['authorization'] = 'enabled'
+
+
+@contextlib.contextmanager
+def yaml_config(path, use_sudo=False):
+    cmd = sudo if use_sudo else run
+    doc = yaml.safe_load(cmd('cat {path}'.format(**locals())))
+    yield doc
+    new_doc = io.StringIO(yaml.dump(doc, default_flow_style=False))
+    files.put(new_doc, path, use_sudo=use_sudo)
+
+
+@task
+def install_user(username=None):
+    default = os.environ['USER']
+    username = username or getpass.getuser()
+    password = getpass.getpass('password> ')
+    new_user = dict(
+        user=username,
+        pwd=password,
+        roles=[dict(
+            role="userAdminAnyDatabase",
+            db="admin",
+        )],
+    )
+    cmd = 'db.createUser({doc})'.format(doc=json.dumps(new_user))
+    run('mongo admin -eval {cmd!r}'.format(**locals()))
 
 
 @task
