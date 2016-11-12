@@ -1,3 +1,17 @@
+3.4
+===
+
+* #3: Fix version handling for both repo selection and
+  package installation on MongoDB. Set default version
+  to 3.2. Now one can simply install the major release
+  as so:
+
+    python -m jaraco.fabric mongodb.distro_install:3.2
+
+  Or install the default version with no version at all:
+
+    python -m jaraco.fabric mongodb.distro_install
+
 3.3
 ===
 

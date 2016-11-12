@@ -1,3 +1,5 @@
+import re
+
 from fabric.api import sudo, task
 from fabric.contrib import files
 from fabric.context_managers import settings
@@ -5,7 +7,7 @@ from fabric.context_managers import settings
 from . import apt
 
 
-__all__ = 'distro_install',
+__all__ = 'distro_install', 'find_current_version'
 
 
 APT_KEYS = [
@@ -14,7 +16,7 @@ APT_KEYS = [
 
 
 @task
-def distro_install(version):
+def distro_install(version="3.2"):
     """
     Install mongodb as an apt package (which also configures it as a
     service).
@@ -48,6 +50,12 @@ def distro_install_2(version):
     files.append(org_list, content, use_sudo=True)
 
 
+@task
+def find_current_version():
+    output = sudo('apt list -qq mongodb-org')
+    return re.search(r'\d+\.\d+\.\d+', output).group(0)
+
+
 def distro_install_3(version):
     """
     Install MongoDB version 3.x
@@ -66,4 +74,5 @@ def distro_install_3(version):
             sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv {}'.format(key))
 
     sudo('apt update')
+    version = find_current_version()
     apt.install_packages('mongodb-org={version}'.format(**locals()))
