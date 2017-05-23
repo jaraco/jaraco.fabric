@@ -142,5 +142,6 @@ def install_systemd():
     fn = 'mongod.service'
     service_strm = pkg_resources.resource_stream(__name__, fn)
     files.put(service_strm, '/lib/systemd/system/' + fn, use_sudo=True)
+    sudo('systemctl enable mongod')
     # TODO: does the service start automatically? If not,
     # sudo('systemctl start mongod')
