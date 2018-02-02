@@ -1,3 +1,8 @@
+3.6
+===
+
+Added Python module.
+
 3.5
 ===
 
