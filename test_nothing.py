@@ -5,5 +5,6 @@ useful test to add to the package, please do so, and then this
 module can be removed.
 """
 
+
 def test_null():
 	"A trivial test to enable the test runner to pass"

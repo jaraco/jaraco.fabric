@@ -36,6 +36,7 @@ def package_context(target, action='install'):
     finally:
         remove_packages(packages)
 
+
 @task
 def install_packages(*packages):
     with package_context(packages) as to_remove:
@@ -43,8 +44,10 @@ def install_packages(*packages):
         to_remove[:] = []
     return installed
 
+
 def build_dependency_context(target):
     return package_context(target, 'build-dep')
+
 
 def remove_packages(packages):
     if not packages:
@@ -52,20 +55,26 @@ def remove_packages(packages):
         return
     sudo('apt autoremove -y -q ' + ' '.join(packages))
 
+
 @task
 def create_installers_group():
     """
     Create an 'installers' group that has rights to install/remove software
     without typing a password.
     """
-    apt_commands = ['aptitude', 'apt-get', 'dpkg', 'apt-key',
-            'apt-add-repository', 'apt-cache', 'apt']
+    apt_commands = [
+        'aptitude', 'apt-get', 'dpkg', 'apt-key',
+        'apt-add-repository', 'apt-cache', 'apt',
+    ]
     commands = ', '.join('/usr/bin/' + cmd for cmd in apt_commands)
     content = "%installers ALL=NOPASSWD: {commands}\n".format(**locals())
     upload_sudoersd_file('installers', content)
     with settings(warn_only=True):
         sudo('addgroup installers')
-    print("Grant installation privilege with 'usermod -a -G installers $username' or yg-fab add_installer:$username")
+    print(
+        "Grant installation privilege with 'usermod -a -G installers "
+        "$username' or yg-fab add_installer:$username")
+
 
 def upload_sudoersd_file(name, content):
     """
@@ -74,10 +83,11 @@ def upload_sudoersd_file(name, content):
     we have to take special precaution when creating sudoers.d files.
     """
     stream = io.BytesIO(content.encode('utf-8'))
-    tmp_name = '/tmp/'+ name
+    tmp_name = '/tmp/' + name
     put(stream, tmp_name, mode=0o440)
     sudo('chown root:root ' + tmp_name)
     sudo('mv {tmp_name} /etc/sudoers.d'.format(**vars()))
+
 
 @task
 def add_installer(username):
@@ -87,10 +97,12 @@ def add_installer(username):
     """
     sudo("usermod -a -G installers {username}".format(**vars()))
 
+
 def ubuntu_version():
     pattern = re.compile('Ubuntu ([\d.]+)')
     out = run('cat /etc/issue')
     return pattern.match(out).group(1)
+
 
 @task
 def add_ppa(name):
@@ -109,10 +121,11 @@ def add_ppa(name):
     if ubuntu_version() >= '12.':
         cmd[1:1] = ['-y']
     res = sudo(' '.join(cmd))
-    if not 'Total number processed: 1' in res:
+    if 'Total number processed: 1' not in res:
         msg = "Failed to add PPA {name}".format(**vars())
         fabric.utils.abort(msg)
     sudo('apt update')
+
 
 def lsb_release():
     return run("lsb_release -sc").strip()
