@@ -1,7 +1,9 @@
-3.6
+4.0
 ===
 
 Added Python module.
+
+Dropped support for Python 3.5 and earlier.
 
 3.5
 ===
