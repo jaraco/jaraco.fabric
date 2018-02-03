@@ -26,6 +26,10 @@ jobs:
       skip_cleanup: true
       skip_upload_docs: true
 
+matrix:
+  allow_failures:
+  - python: nightly
+
 cache: pip
 
 install:
