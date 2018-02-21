@@ -110,8 +110,8 @@ def add_ppa(name):
     Add the Personal Package Archive
     """
     sudo('apt update')
-    # need python-software-properties for apt-add-repository
-    sudo('apt install -q -y python-software-properties')
+    # need software-properties-common for apt-add-repository
+    sudo('apt install -q -y software-properties-common')
     # apt-add-repository returns 0 even when it failed, so check its output
     #  for success or failure.
     cmd = [
