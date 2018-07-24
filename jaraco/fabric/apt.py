@@ -99,7 +99,7 @@ def add_installer(username):
 
 
 def ubuntu_version():
-    pattern = re.compile('Ubuntu ([\d.]+)')
+    pattern = re.compile(r'Ubuntu ([\d.]+)')
     out = run('cat /etc/issue')
     return pattern.match(out).group(1)
 
