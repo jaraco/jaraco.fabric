@@ -72,12 +72,15 @@ def distro_install_3(version):
     repo_url = "http://repo.mongodb.org/apt/ubuntu"
     tmpl = "deb {repo_url} {lsb_release}/mongodb-org/{version} multiverse"
     content = tmpl.format(**locals())
-    org_list = '/etc/apt/sources.list.d/mongodb-org-{version}.list'.format(**locals())
+    org_list = f'/etc/apt/sources.list.d/mongodb-org-{version}.list'
     files.append(org_list, content, use_sudo=True)
 
     with settings(warn_only=True):
         for key in APT_KEYS:
-            sudo('apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv {}'.format(key))
+            sudo(
+                'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 '
+                f'--recv {key}'
+            )
 
     sudo('apt update')
     version = find_current_version()
