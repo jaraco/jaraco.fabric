@@ -1,3 +1,9 @@
+4.1.1
+=====
+
+Fixed issue where ``apt.add_ppa`` would fail if the PPA
+was already present. Better to be idempotent.
+
 4.1
 ===
 

@@ -9,7 +9,6 @@ from jaraco.itertools import always_iterable
 from fabric.operations import sudo, run
 from fabric.api import task, put
 from fabric.context_managers import settings
-import fabric.utils
 
 
 __all__ = [
@@ -109,7 +108,7 @@ def add_ppa(name):
     """
     Add the Personal Package Archive
     """
-    sudo('apt update')
+    sudo('apt update -q')
     # need software-properties-common for apt-add-repository
     sudo('apt install -q -y software-properties-common')
     # apt-add-repository returns 0 even when it failed, so check its output
@@ -120,11 +119,8 @@ def add_ppa(name):
     ]
     if ubuntu_version() >= '12.':
         cmd[1:1] = ['-y']
-    res = sudo(' '.join(cmd))
-    if 'Total number processed: 1' not in res:
-        msg = "Failed to add PPA {name}".format(**vars())
-        fabric.utils.abort(msg)
-    sudo('apt update')
+    sudo(' '.join(cmd))
+    sudo('apt update -q')
 
 
 def lsb_release():
