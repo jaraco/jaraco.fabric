@@ -1,10 +1,10 @@
-dist: trusty
+dist: xenial
 sudo: false
 language: python
 
 python:
-- nightly
-- &latest_py3 3.6
+- 3.6
+- &latest_py3 3.7
 
 jobs:
   fast_finish: true
@@ -12,22 +12,13 @@ jobs:
   - stage: deploy
     if: tag IS present
     python: *latest_py3
-    install: skip
-    script: skip
-    deploy:
-      provider: pypi
-      on:
-        tags: true
-        all_branches: true
-      user: jaraco
-      password:
-        secure: J+PGeGI/u2D/9Iq21SFh/PA+jQHUmBUP8jaczdM/qWFznGPkB03ciFbSyRNfJzK6fBboHnV6m55MLrzhgZpC0LzGMIFJindtNkgfxegqzoaDWSFkVcjV5NAdd6g/07+PRNPJl/k6NIEPUw6CgfDoKLHPpvke8bzkR5HNVczj2wZgu5svBrDFG999aQ/Uw5MPqB2ZTF0RlK2FAz+30UkWYBO1DkRIkpBDHDxlx8xv46pcFw+P/m8q4CQhWpTkyCjM0rX99mBmCa7zD06F25wZ6xZVwI2hbpwYxNdpYl7k4KcvOztZopJuZUojk9zTx+MdaJKNoYalC0l4gAS47ES2wAysGSoIFIIuQUkiW2ovSLgPWDDBce0fX4EqMJuJZMNZvhuKHZDm+cgxvWcKoomCm1ZEZlVcThYgpPXs3IiBdVfG9jnafNAZ5WCBBkk0u8y3CaGGkhc6S35aW/B85hglsKWjg5XVIncerUTAXwz1Ly192CEcWhyDSLNTfOcTGI54QTCfVVESeuovhoDgUQDDQOGvlN1kOFbd9d1RJXYdiEbCPlmRmNPuXx6HfbWfw1WkNT55XLLiXDaWAo9CVrbWMF6IIRATKQQGlWCS1qtRs/9iDCEZPouLZiyCjg9FzoQjRwPU5usqaxSPANVJvLWCe/bjGxpRLYJ4EGgHBMOVlZs=
-      distributions: dists
-      skip_cleanup: true
-
-matrix:
-  allow_failures:
-  - python: nightly
+    before_script: skip
+    env:
+    - TWINE_USERNAME=jaraco
+    # TWINE_PASSWORD
+    - secure: nnnhiVcOqay+wJkafSlryQYGgE+9cdg+rpK6nrKhmr74j1ZHTvAMqGUK1IjCx1sGOlyVn0ixsIqLpgmpcGrHIFuat7MmeQ6jO+JOySKBTpc4F2eC5vbiC6eKXltlOAqR8MIRFzXY2GEHaxDw9MicMVaF5BEzT8j4zi2FgXezyX879Erx5VPu0GZ9c0QjCCgrjqgncfGmmuRs8Jue4IUPTrQtcgyAV2UtS3oKaspPRxDCQL04Jpnj9msEnqnYr++cVZ2vXZ7bczifaPuyenCFhm1THDeRVRC/DHD3GZ8RD0qgkLaMhltH/I8CUTKNmbzhQ4MId/BejLq9oPxAPWsWRamx71I1F+1en/d2kzKReZLUO9tqNVtpYzbHK1DrOBZzxRRPLD/md4DyKwm0yPYrsNiauTPX/byG2U2BPkb1DycV6Y0mvgkyJcH9KIZa0PceQ66k4roL25ESLlDyr2t+LDo9mxG4UPksLblQqZv7y4F01kZVlExo5/BKGO7KtLw44gJdhURcvo4MuqnkhPSC4YV1L13f1TxozhdZ4ZGe+2W4dDyWQGCgu+q4EV5oAKEs1dWyV4bQo/VVkp+5GjsslOKKbQ+7hVoj9GqrDj4uD9s6hct95v29PZhdX8XLFPQt7Xq12d+RrPla+UJkD9MHceWvnAYtKXYYfGRNBdMCEtU=
+    - TOX_TESTENV_PASSENV="TWINE_USERNAME TWINE_PASSWORD"
+    script: tox -e release
 
 cache: pip
 
