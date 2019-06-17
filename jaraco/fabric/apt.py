@@ -11,12 +11,7 @@ from fabric.api import task, put
 from fabric.context_managers import settings
 
 
-__all__ = [
-    'install_packages',
-    'create_installers_group',
-    'add_installer',
-    'add_ppa',
-]
+__all__ = ['install_packages', 'create_installers_group', 'add_installer', 'add_ppa']
 
 
 @contextlib.contextmanager
@@ -62,8 +57,13 @@ def create_installers_group():
     without typing a password.
     """
     apt_commands = [
-        'aptitude', 'apt-get', 'dpkg', 'apt-key',
-        'apt-add-repository', 'apt-cache', 'apt',
+        'aptitude',
+        'apt-get',
+        'dpkg',
+        'apt-key',
+        'apt-add-repository',
+        'apt-cache',
+        'apt',
     ]
     commands = ', '.join('/usr/bin/' + cmd for cmd in apt_commands)
     content = "%installers ALL=NOPASSWD: {commands}\n".format(**locals())
@@ -72,7 +72,8 @@ def create_installers_group():
         sudo('addgroup installers')
     print(
         "Grant installation privilege with 'usermod -a -G installers "
-        "$username' or yg-fab add_installer:$username")
+        "$username' or yg-fab add_installer:$username"
+    )
 
 
 def upload_sudoersd_file(name, content):
@@ -113,10 +114,7 @@ def add_ppa(name):
     sudo('apt install -q -y software-properties-common')
     # apt-add-repository returns 0 even when it failed, so check its output
     #  for success or failure.
-    cmd = [
-        'apt-add-repository',
-        'ppa:' + name,
-    ]
+    cmd = ['apt-add-repository', 'ppa:' + name]
     if ubuntu_version() >= '12.':
         cmd[1:1] = ['-y']
     sudo(' '.join(cmd))

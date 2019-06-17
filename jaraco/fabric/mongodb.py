@@ -15,14 +15,16 @@ from . import apt
 
 
 __all__ = (
-    'distro_install', 'find_current_version', 'install_systemd',
-    'enable_authentication', 'install_user', 'bind_all',
+    'distro_install',
+    'find_current_version',
+    'install_systemd',
+    'enable_authentication',
+    'install_user',
+    'bind_all',
 )
 
 
-APT_KEYS = [
-    'EA312927',
-]
+APT_KEYS = ['EA312927']
 
 
 @task
@@ -49,8 +51,7 @@ def distro_install_2(version):
 
     # MongoDB 2
     content = (
-        'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart '
-        'dist 10gen',
+        'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart ' 'dist 10gen',
     )
     org_list = '/etc/apt/sources.list.d/mongodb.list'
     files.append(org_list, content, use_sudo=True)
@@ -78,8 +79,7 @@ def distro_install_3(version):
     with settings(warn_only=True):
         for key in APT_KEYS:
             sudo(
-                'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 '
-                f'--recv {key}'
+                'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 ' f'--recv {key}'
             )
 
     sudo('apt update')
@@ -101,9 +101,7 @@ def bind_all():
     Bind to all interfaces.
     """
     with yaml_config('/etc/mongod.conf', use_sudo=True) as config:
-        config.setdefault('net', {}).update(
-            bindIp='0.0.0.0',
-        )
+        config.setdefault('net', {}).update(bindIp='0.0.0.0')
 
 
 @contextlib.contextmanager
@@ -123,10 +121,7 @@ def install_user(username=None):
     new_user = dict(
         user=username,
         pwd=password,
-        roles=[dict(
-            role="userAdminAnyDatabase",
-            db="admin",
-        )],
+        roles=[dict(role="userAdminAnyDatabase", db="admin")],
     )
     cmd = 'db.createUser({doc})'.format(doc=json.dumps(new_user))
     run('mongo admin -eval {cmd!r}'.format(**locals()))
