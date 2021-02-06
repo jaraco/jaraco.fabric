@@ -13,8 +13,8 @@
 .. .. image:: https://img.shields.io/appveyor/ci/jaraco/skeleton/master.svg
 ..    :target: https://ci.appveyor.com/project/jaraco/skeleton/branch/master
 
-.. image:: https://readthedocs.org/projects/jaracofabric/badge/?version=latest
-   :target: https://jaracofabric.readthedocs.io/en/latest/?badge=latest
+.. .. image:: https://readthedocs.org/projects/skeleton/badge/?version=latest
+..    :target: https://skeleton.readthedocs.io/en/latest/?badge=latest
 
 Fabric tasks and helpers. Includes modules implementing
 Fabric tasks.
