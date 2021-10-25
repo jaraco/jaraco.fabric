@@ -1,3 +1,8 @@
+v5.2.0
+======
+
+Added files routines.
+
 v5.1.0
 ======
 
