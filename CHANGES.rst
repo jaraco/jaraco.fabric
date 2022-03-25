@@ -1,3 +1,8 @@
+v5.2.1
+======
+
+Fixed ``context`` parameter of ``upload_template``.
+
 v5.2.0
 ======
 

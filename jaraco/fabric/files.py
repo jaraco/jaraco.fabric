@@ -18,7 +18,7 @@ def exists(c, candidate):
     return c.run(cmd, warn=True)
 
 
-def upload_template(c, src, dest, *, mode=None, **context):
+def upload_template(c, src, dest, *, mode=None, context={}):
     rnd_name = next(tempfile._get_candidate_names())
     tmp_dest = f'/tmp/{rnd_name}'
     template = pathlib.Path(src).read_text()
