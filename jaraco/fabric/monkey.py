@@ -14,3 +14,5 @@ def workaround_2090(func):
             if __import__('os').path.exists(key)
         ]
         return func(c, *args, **kwargs)
+
+    return wrapper
