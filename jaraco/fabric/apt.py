@@ -6,16 +6,14 @@ import contextlib
 
 import jaraco.apt
 from jaraco.itertools import always_iterable
-from fabric.operations import sudo, run
-from fabric.api import task, put
-from fabric.context_managers import settings
+from fabric import task
 
 
 __all__ = ['install_packages', 'create_installers_group', 'add_installer', 'add_ppa']
 
 
 @contextlib.contextmanager
-def package_context(target, action='install'):
+def package_context(c, target, action='install'):
     """
     A context for installing the build dependencies for a given target (or
     targets). Uses apt. Removes the dependencies when the context is
@@ -23,7 +21,7 @@ def package_context(target, action='install'):
     the list within the context.
     """
     target = ' '.join(always_iterable(target))
-    status = sudo('apt {action} -q -y {target}'.format(**vars()))
+    status = c.sudo('apt {action} -q -y {target}'.format(**vars()))
     packages = jaraco.apt.parse_new_packages(status)
     try:
         yield packages
@@ -32,8 +30,8 @@ def package_context(target, action='install'):
 
 
 @task
-def install_packages(*packages):
-    with package_context(packages) as to_remove:
+def install_packages(c, *packages):
+    with package_context(c, packages) as to_remove:
         installed = list(to_remove)
         to_remove[:] = []
     return installed
@@ -43,15 +41,15 @@ def build_dependency_context(target):
     return package_context(target, 'build-dep')
 
 
-def remove_packages(packages):
+def remove_packages(c, packages):
     if not packages:
         print("No packages specified, nothing to remove")
         return
-    sudo('apt autoremove -y -q ' + ' '.join(packages))
+    c.sudo('apt autoremove -y -q ' + ' '.join(packages))
 
 
 @task
-def create_installers_group():
+def create_installers_group(c):
     """
     Create an 'installers' group that has rights to install/remove software
     without typing a password.
@@ -67,16 +65,15 @@ def create_installers_group():
     ]
     commands = ', '.join('/usr/bin/' + cmd for cmd in apt_commands)
     content = "%installers ALL=NOPASSWD: {commands}\n".format(**locals())
-    upload_sudoersd_file('installers', content)
-    with settings(warn_only=True):
-        sudo('addgroup installers')
+    upload_sudoersd_file(c, 'installers', content)
+    c.sudo('addgroup installers', warn=True)
     print(
         "Grant installation privilege with 'usermod -a -G installers "
         "$username' or yg-fab add_installer:$username"
     )
 
 
-def upload_sudoersd_file(name, content):
+def upload_sudoersd_file(c, name, content):
     """
     Thanks to a long-standing bug in Ubuntu Lucid
     (https://bugs.launchpad.net/ubuntu/+source/sudo/+bug/553786),
@@ -84,46 +81,46 @@ def upload_sudoersd_file(name, content):
     """
     stream = io.BytesIO(content.encode('utf-8'))
     tmp_name = '/tmp/' + name
-    put(stream, tmp_name, mode=0o440)
-    sudo('chown root:root ' + tmp_name)
-    sudo('mv {tmp_name} /etc/sudoers.d'.format(**vars()))
+    c.put(stream, tmp_name, mode=0o440)
+    c.sudo('chown root:root ' + tmp_name)
+    c.sudo('mv {tmp_name} /etc/sudoers.d'.format(**vars()))
 
 
 @task
-def add_installer(username):
+def add_installer(c, username):
     """
     Add username to the installers group, after which they should be able to
     install/remove software without typing a password.
     """
-    sudo("usermod -a -G installers {username}".format(**vars()))
+    c.sudo("usermod -a -G installers {username}".format(**vars()))
 
 
-def ubuntu_version():
+def ubuntu_version(c):
     pattern = re.compile(r'Ubuntu ([\d.]+)')
-    out = run('cat /etc/issue')
+    out = c.run('cat /etc/issue').stdout.strip()
     return pattern.match(out).group(1)
 
 
 @task
-def add_ppa(name):
+def add_ppa(c, name):
     """
     Add the Personal Package Archive
     """
-    sudo('apt update -q')
+    c.sudo('apt update -q')
     # need software-properties-common for apt-add-repository
-    sudo('apt install -q -y software-properties-common')
+    c.sudo('apt install -q -y software-properties-common')
     # apt-add-repository returns 0 even when it failed, so check its output
     #  for success or failure.
     cmd = ['apt-add-repository', 'ppa:' + name]
-    if ubuntu_version() >= '12.':
+    if ubuntu_version(c) >= '12.':
         cmd[1:1] = ['-y']
-    sudo(' '.join(cmd))
-    sudo('apt update -q')
+    c.sudo(' '.join(cmd))
+    c.sudo('apt update -q')
 
 
-def lsb_release():
-    return run("lsb_release -sc").strip()
+def lsb_release(c):
+    return c.run("lsb_release -sc").strip()
 
 
-def lsb_version():
-    return run('lsb_release -sr').strip()
+def lsb_version(c):
+    return c.run('lsb_release -sr').strip()

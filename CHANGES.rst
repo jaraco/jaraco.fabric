@@ -1,3 +1,9 @@
+v6.0.0
+======
+
+Updated API to work with fabric 2 instead of Fabric 3. Most
+behaviors untested and likely broken, but tests run and pass.
+
 v5.3.0
 ======
 
