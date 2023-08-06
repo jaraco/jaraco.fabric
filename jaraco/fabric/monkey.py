@@ -8,11 +8,12 @@ def workaround_2090(func):
 
     @functools.wraps(func)
     def wrapper(c, *args, **kwargs):
-        c.connect_kwargs['key_filename'][:] = [
-            key
-            for key in c.connect_kwargs['key_filename']
-            if __import__('os').path.exists(key)
-        ]
+        if 'key_filename' in c.connect_kwargs:
+            c.connect_kwargs['key_filename'][:] = [
+                key
+                for key in c.connect_kwargs['key_filename']
+                if __import__('os').path.exists(key)
+            ]
         return func(c, *args, **kwargs)
 
     return wrapper
