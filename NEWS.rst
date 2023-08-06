@@ -1,3 +1,18 @@
+v6.1.0
+======
+
+Features
+--------
+
+- Require Python 3.8 or later.
+
+
+Bugfixes
+--------
+
+- Fixed issue with workaround for fabric/fabric#2090. (#5)
+
+
 v6.0.0
 ======
 
