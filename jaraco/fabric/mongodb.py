@@ -5,7 +5,7 @@ import getpass
 import contextlib
 import io
 
-import pkg_resources
+from importlib_resources import files
 import yaml
 from fabric import task
 
@@ -142,8 +142,9 @@ def install_systemd(c):
         return
 
     fn = 'mongod.service'
-    service_strm = pkg_resources.resource_stream(__name__, fn)
-    c.put(service_strm, '/lib/systemd/system/' + fn, use_sudo=True)
+    service_path = files().joinpath(fn)
+    with service_path.open(mode='rb') as strm:
+        c.put(strm, '/lib/systemd/system/' + fn, use_sudo=True)
     c.sudo('systemctl enable mongod')
     # TODO: does the service start automatically? If not,
     # sudo('systemctl start mongod')
