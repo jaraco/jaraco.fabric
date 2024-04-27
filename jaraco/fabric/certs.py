@@ -1,5 +1,8 @@
 import itertools
 
+from jaraco.home import contact
+
+
 flatten = itertools.chain.from_iterable
 
 
@@ -8,7 +11,7 @@ def install_certs_for(c, *sites):
         'certbot',
         '--agree-tos',
         '--email',
-        'jaraco@jaraco.com',
+        contact.load().email,
         '--non-interactive',
         '--nginx',
         'certonly',

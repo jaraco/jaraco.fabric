@@ -22,6 +22,7 @@ dependencies = [
 	"jaraco.itertools",
 	"pyyaml",
 	"importlib_resources",
+	"jaraco.home",
 ]
 dynamic = ["version"]
 
