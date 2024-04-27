@@ -1,3 +1,12 @@
+v6.2.0
+======
+
+Features
+--------
+
+- Added certs module.
+
+
 v6.1.1
 ======
 
