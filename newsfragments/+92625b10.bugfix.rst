@@ -1,1 +1,0 @@
-Renamed install function for conciseness.

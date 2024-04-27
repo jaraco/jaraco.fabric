@@ -1,3 +1,12 @@
+v6.2.1
+======
+
+Bugfixes
+--------
+
+- Renamed install function for conciseness.
+
+
 v6.2.0
 ======
 
