@@ -6,7 +6,7 @@ from jaraco.home import contact
 flatten = itertools.chain.from_iterable
 
 
-def install_certs_for(c, *sites):
+def install(c, *sites):
     cmd = [
         'certbot',
         '--agree-tos',
