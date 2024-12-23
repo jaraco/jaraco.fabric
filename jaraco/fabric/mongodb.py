@@ -54,7 +54,7 @@ def distro_install_2(c, version):
 
     # MongoDB 2
     content = (
-        'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart ' 'dist 10gen',
+        'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen',
     )
     org_list = '/etc/apt/sources.list.d/mongodb.list'
 
@@ -82,7 +82,7 @@ def distro_install_3(c, version):
 
     for key in APT_KEYS:
         c.sudo(
-            'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 ' f'--recv {key}',
+            f'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv {key}',
             warn=True,
         )
 
