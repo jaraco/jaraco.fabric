@@ -1,3 +1,12 @@
+v6.3.0
+======
+
+Features
+--------
+
+- Added shell module with escape_param helper.
+
+
 v6.2.1
 ======
 
