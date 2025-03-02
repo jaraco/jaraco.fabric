@@ -2,7 +2,6 @@ import itertools
 
 from jaraco.home import contact
 
-
 flatten = itertools.chain.from_iterable
 
 

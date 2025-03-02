@@ -1,16 +1,16 @@
+import contextlib
+import getpass
+import io
+import json
 import os
 import re
-import json
-import getpass
-import contextlib
-import io
 
-from importlib_resources import files
 import yaml
+from importlib_resources import files
+
 from fabric import task
 
 from . import apt
-
 
 __all__ = (
     'distro_install',

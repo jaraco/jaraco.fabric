@@ -1,13 +1,10 @@
-from __future__ import print_function
-
+import contextlib
 import io
 import re
-import contextlib
 
 import jaraco.apt
-from jaraco.itertools import always_iterable
 from fabric import task
-
+from jaraco.itertools import always_iterable
 
 __all__ = ['install_packages', 'create_installers_group', 'add_installer', 'add_ppa']
 

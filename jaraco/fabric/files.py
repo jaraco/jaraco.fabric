@@ -3,9 +3,9 @@ Fabric 2 implementations of file routines that
 used to come with Fabric 1.
 """
 
-import tempfile
-import pathlib
 import io
+import pathlib
+import tempfile
 
 
 def is_dir(c, candidate):
