@@ -3,10 +3,11 @@ import io
 import re
 
 import jaraco.apt
-from fabric import task
 from jaraco.itertools import always_iterable
 
-__all__ = ['install_packages', 'create_installers_group', 'add_installer', 'add_ppa']
+from fabric import task
+
+__all__ = ['add_installer', 'add_ppa', 'create_installers_group', 'install_packages']
 
 
 @contextlib.contextmanager

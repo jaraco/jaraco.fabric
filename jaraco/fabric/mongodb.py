@@ -13,12 +13,12 @@ from fabric import task
 from . import apt
 
 __all__ = (
+    'bind_all',
     'distro_install',
+    'enable_authentication',
     'find_current_version',
     'install_systemd',
-    'enable_authentication',
     'install_user',
-    'bind_all',
 )
 
 
@@ -38,7 +38,7 @@ def distro_install(c, version="3.2"):
     elif version.startswith('3.'):
         return distro_install_3(version)
 
-    raise RuntimeError('Unknown version {}'.format(version))
+    raise RuntimeError(f'Unknown version {version}')
 
 
 def append(c, *args, **kwargs):
@@ -127,7 +127,7 @@ def install_user(c, username=None):
         pwd=password,
         roles=[dict(role="userAdminAnyDatabase", db="admin")],
     )
-    cmd = 'db.createUser({doc})'.format(doc=json.dumps(new_user))
+    cmd = f'db.createUser({json.dumps(new_user)})'
     c.run('mongo admin -eval {cmd!r}'.format(**locals()))
 
 
