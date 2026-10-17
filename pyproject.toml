@@ -41,7 +41,6 @@ test = [
 
 	# local
 	"fabric",
-	"types-setuptools",
 	"types-pyyaml",
 ]
 

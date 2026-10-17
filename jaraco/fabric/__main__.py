@@ -1,7 +1,7 @@
-import pkg_resources
+from importlib_resources import as_file, files
 
 from . import wrapper
 
 if __name__ == '__main__':
-    filename = pkg_resources.resource_filename(__name__, 'fabfile.py')
-    wrapper.run_fabric(filename)
+    with as_file(files(__package__) / 'fabfile.py') as filename:
+        wrapper.run_fabric(filename)
